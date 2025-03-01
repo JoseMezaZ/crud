@@ -5,6 +5,7 @@ let imagenPro = document.querySelector(".imagen-pro");
 let btnGuardar = document.querySelector(".btn-guardar");
 let tabla = document.querySelector(".table tbody");
 let buscador = document.getElementById("buscador");
+let exportar = document.getElementById("exportar");
 let productoEnEdicion = null;
 
 btnGuardar.addEventListener("click", () => {
@@ -17,6 +18,13 @@ btnGuardar.addEventListener("click", () => {
 buscador.addEventListener("input", () => {
     mostrarProductos(buscador.value);
 });
+
+exportar.addEventListener("click", () => {
+    let {jsPDF} = window.jspdf;
+    let doc = new jsPDF();
+    doc.autoTable({html: ".table"});
+    doc.save("productos.pdf");
+})
 
 function validarFormulario() {
     if (nombrePro.value && precioPro.value && descipcionPro.value && imagenPro.value) {
@@ -101,12 +109,15 @@ function editarProducto(index) {
     btnGuardar.textContent = "Actualizar Producto";
 }
 
+function borrarTabla() {
+    tabla.innerHTML = "";
+}
 
 mostrarProductos();
 
 //Mostrar los datos localStorage al recargar pagina
 document.addEventListener("DOMContentLoaded", function(){
     borrarTabla();
-    mostrarDatos()
+    mostrarProductos()
 })
 
